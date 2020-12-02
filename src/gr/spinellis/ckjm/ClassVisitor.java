@@ -31,6 +31,7 @@ import java.lang.reflect.Modifier;
  * @see ClassMetrics
  * @version $Revision: 1.21 $
  * @author <a href="http://www.spinellis.gr">Diomidis Spinellis</a>
+ * extended by Dominik Neumann
  */
 public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     /** The class being visited. */
@@ -64,6 +65,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 	cmap = classMap;
 	myClassName = jc.getClassName();
 	cm = cmap.getMetrics(myClassName);
+	cm.setClassName(myClassName);
     }
 
     /** Return the class's metrics container. */
@@ -77,6 +79,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     public void visitJavaClass(JavaClass jc) {
 	String super_name   = jc.getSuperclassName();
 	String package_name = jc.getPackageName();
+	cm.setPackageName(package_name);
 
 	cm.setVisited();
 	if (jc.isPublic())
@@ -193,6 +196,8 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     /** Do final accounting at the end of the visit. */
     public void end() {
 	cm.setCbo(efferentCoupledClasses.size());
+	//Dominik Neumann
+	cm.setEfferentCoupledClasses(efferentCoupledClasses);
 	cm.setRfc(responseSet.size());
 	/*
 	 * Calculate LCOM  as |P| - |Q| if |P| - |Q| > 0 or 0 otherwise

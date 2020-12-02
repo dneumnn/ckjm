@@ -30,8 +30,9 @@ import java.io.*;
  *
  * @version $Revision: 1.9 $
  * @author <a href="http://www.spinellis.gr">Diomidis Spinellis</a>
+ * modified by Dominik Neumann: made the class public and returning the ClassMetrics hashmap.
  */
-class ClassMetricsContainer {
+public class ClassMetricsContainer {
 
     /** The map from class names to the corresponding metrics */
     private HashMap<String, ClassMetrics> m = new HashMap<String, ClassMetrics>();
@@ -42,7 +43,7 @@ class ClassMetricsContainer {
 	if (cm == null) {
 	    cm = new ClassMetrics();
 	    m.put(name, cm);
-	}
+	    }
 	return cm;
     }
 
@@ -56,6 +57,13 @@ class ClassMetricsContainer {
 	    ClassMetrics cm = e.getValue();
 	    if (cm.isVisited() && (MetricsFilter.includeAll() || cm.isPublic()))
 		handler.handleClass(e.getKey(), cm);
-	}
+	    }
+    }
+    
+    public Collection<ClassMetrics> getClassMetrics() {
+        Collection<ClassMetrics> classMetrics = this.m.values();
+        
+        return classMetrics;
+        
     }
 }

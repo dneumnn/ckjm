@@ -27,8 +27,13 @@ import java.util.HashSet;
  * @see ClassVisitor
  * @version $Revision: 1.12 $
  * @author <a href="http://www.spinellis.gr">Diomidis Spinellis</a>
+ * extended by Dominik Neumann
  */
 public class ClassMetrics {
+
+    private String className;
+    private String packageName;
+    
     /** Weighted methods per class */
     private int wmc;
     /** Number of children */
@@ -49,6 +54,10 @@ public class ClassMetrics {
     private boolean isPublicClass;
     /** Coupled classes: classes that use this class */
     private HashSet<String> afferentCoupledClasses;
+    //Dominik Neumann
+    /** EfferentCoupled classes: classes that are used by this class */
+    private HashSet<String> efferentCoupledClasses;
+    
 
     /** Default constructor. */
     ClassMetrics() {
@@ -58,6 +67,9 @@ public class ClassMetrics {
 	npm = 0;
 	visited = false;
 	afferentCoupledClasses = new HashSet<String>();
+	efferentCoupledClasses = new HashSet<String>();
+	className = "";
+	packageName = "";
     }
 
     /** Increment the weighted methods count */
@@ -92,8 +104,20 @@ public class ClassMetrics {
 
     /** Return the class's afferent couplings metric */
     public int getCa() { return afferentCoupledClasses.size(); }
+    
     /** Add a class to the set of classes that depend on this class */
     public void addAfferentCoupling(String name) { afferentCoupledClasses.add(name); }
+    
+    /** Set effnerent coupled classes */
+    public void setEfferentCoupledClasses(HashSet<String> efferentCoupledClasses) { this.efferentCoupledClasses = efferentCoupledClasses; }    
+
+    /** Get effnerent coupled classes */
+    public HashSet<String> getEfferentCoupledClasses() {return this.efferentCoupledClasses;}
+    
+    /** Get affnerent coupled classes */    
+    public HashSet<String> getAfferentCoupledClasses() {return this.afferentCoupledClasses;}
+
+
 
     /** Increment the number of public methods count */
     public void incNpm() { npm++; }
@@ -136,4 +160,11 @@ public class ClassMetrics {
      * we do not want them to appear in the output results.
      */
     public boolean isVisited() { return visited; }
+    
+    public String getClassName() {return this.className; }
+    public void setClassName(String className) {this.className = className; }
+
+    public String getPackageName() {return this.packageName; }
+    public void setPackageName(String packageName) {this.packageName = packageName; }    
+    
 }

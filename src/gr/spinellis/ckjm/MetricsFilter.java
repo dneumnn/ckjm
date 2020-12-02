@@ -36,6 +36,7 @@ import java.util.*;
  * @see ClassMetrics
  * @version $Revision: 1.9 $
  * @author <a href="http://www.spinellis.gr">Diomidis Spinellis</a>
+ * extended by Dominik.Neumann
  */
 public class MetricsFilter {
     /** True if the measurements should include calls to the Java JDK into account */
@@ -93,6 +94,23 @@ public class MetricsFilter {
         for (int i = 0; i < files.length; i++)
             processClass(cm, files[i]);
         cm.printMetrics(outputHandler);
+    }
+    
+    /**
+     * The interface for other Java based applications.
+     * Implement the outputhandler to catch the results
+     *
+     * @param files Class files to be analyzed
+     * @param outputHandler An implementation of the CkjmOutputHandler interface
+     */
+    public static ClassMetricsContainer runMetricsAndReturnContainer(String[] files, CkjmOutputHandler outputHandler) {
+        ClassMetricsContainer cm = new ClassMetricsContainer();
+
+        for (int i = 0; i < files.length; i++)
+            processClass(cm, files[i]);
+        cm.printMetrics(outputHandler);
+        
+        return cm;
     }
 
     /** The filter's main body.
